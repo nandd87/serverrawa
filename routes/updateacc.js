@@ -4,6 +4,7 @@ const mysql = require('mysql');
 const cors = require('cors');
 const session = require('express-session');
 const cookieParser = require("cookie-parser");
+const multer = require("multer");
 
 const db= mysql.createConnection({
     host : "localhost",
@@ -14,7 +15,7 @@ const db= mysql.createConnection({
 
 const storage = multer.diskStorage({
     destination:function (req,file,cb){
-        cb(null, "./public/uploads");
+        cb(null, "./public/upload");
        },
        filename: function(req,file,cb){
         cb(
@@ -32,13 +33,13 @@ const storage = multer.diskStorage({
 
 router.post("/", upload.single('gambar'),(req, res) => {
     try {
-        const id = req.session.id;
+        const id = req.body.id;
         const email = req.body.email;
         const name = req.body.name;
         const username = req.body.username;
         const password = req.body.password;
         const rekening = req.body.rekening;
-        let finalImageURL = req.protocol + '://' + req.get('host')+ '/uploads/' + req.file.filename;
+        let finalImageURL = req.protocol + '://' + req.get('host')+ '/upload/' + req.file.filename;
         
         const sql = "UPDATE `tbshop` SET `email`='"+email+"',`name`='"+name+"',`username`='"+username+"',`password`='"+password+"',`rekening`='"+rekening+"',`shopimg`='"+finalImageURL+"' WHERE `id` = '"+id+"' ";
         return res.json({ sql });

@@ -14,7 +14,8 @@ const db= mysql.createConnection({
 
 
 router.get("/" , (req,res) => {
-    db.query("SELECT * FROM tbproduk" , (err,result) => {
+    const shopid = req.session.id;
+    db.query("SELECT * FROM tbproduk WHERE shopID = "+shopid+"" , (err,result) => {
         if(err){
             console.log(err);
         } else{

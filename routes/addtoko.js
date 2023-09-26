@@ -39,19 +39,19 @@ const storage = multer.diskStorage({
 
 
     router.post('/' , upload.single('gambar'), (req, res) =>{
-        const shopID = 2;
-        const nama = req.body.nama;
-        const harga = req.body.harga;
-        const deskripsi = req.body.deskripsi;
-        // const tipe = req.body.tipe;
-        const harga2 = req.body.harga2;
-        let finalImageURL = req.protocol + '://' + req.get('host')+ '/uploads/' + req.file.filename;
+     let finalImageURL = req.protocol + '://' + req.get('host')+ '/upload/' + req.file.filename;
+     const nama = req.body.nama;
+     const email = req.session.email;
+     const username = req.body.username;
+     const password = req.body.password;
+     const rekening = req.body.rekening;
+
         // const query = "INSERT INTO `tbproduk`(`shopid`, `nama`, `harga`, `tipe`, `deskripsi`, `harga2`,`img`) VALUES ("+shopID+","+nama+",?,?,?,?,?)";
         // db.query(sql , (err, data)=>{
         //     res.json({status: "sukses",image: finalImageURL})
         // })
         db.query(
-            "INSERT INTO `tbproduk`(`shopid`, `nama`, `harga`, `tipe`, `deskripsi`, `harga2`, `img`) VALUES ('"+shopID+"','"+nama+"','"+harga+"','"+tipe+"','"+deskripsi+"','"+harga2+"','"+finalImageURL+"')",
+            "INSERT INTO `tbshop`(`email`, `name`, `username`, `password`, `rekening`, `shopimg`) VALUES ('"+email+"','"+nama+"','"+username+"','"+password+"','"+rekening+"','"+finalImageURL+"')",
             (err, result) => {
               if (err) {
                 console.log(err);

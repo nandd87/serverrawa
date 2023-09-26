@@ -18,7 +18,7 @@ const db= mysql.createConnection({
         if(err) return res.json("error");
         if(data.length > 0){
             req.session.email = req.body.email;
-            req.session.id = req.body.id;
+            req.session.idses = req.body.id;
             req.session.save();
             return res.json("sukses");
         }else{

@@ -1,2 +1,13 @@
 
 GET http://localhost:8081/grab
+
+###
+POST http://localhost:8081/grab
+
+{
+    "nama" : "1312312",
+    "harga" : 132321,
+    "tipe" : "asdasd",
+    "img" : "asd",
+    "deskripsi" : "asd",    
+}
