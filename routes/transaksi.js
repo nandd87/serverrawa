@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
     const nama = req.body.nama;
     const shopID = req.body.id;
     const waktu = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`; 
-    const status = "Diterima";
+    const status = "Pending";
 
     const query2 = "INSERT INTO `tbtransaksi`(`shopid`, `noTelp`, `deskripsi`, `namaProduk`, `waktu`, `status`,`nama`) VALUES (?,?,?,?,?,?,?)";
 
