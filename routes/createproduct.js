@@ -30,7 +30,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 
 router.post('/', upload.single('gambar'), (req, res) => {
-  const id = req.body.id;
+  const id = req.session.idses;
   const nama = req.body.nama;
   let finalImageURL = req.protocol + '://' + req.get('host')+ '/upload/' + req.file.filename;
   const harga = req.body.harga;

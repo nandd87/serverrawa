@@ -6,6 +6,7 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const multer = require('multer');
 const path = require("path");
+const store = new session.MemoryStore();
 
 const bodyParser = require('body-parser');
 app.use(cors({ credentials: true, origin: 'http://localhost:3000'}));
@@ -16,12 +17,6 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, "public")));
 const oneDay = 1000 * 60 * 60 * 24;
-app.use(session({
-    secret: "thisismysecrctekey",
-    saveUninitialized:true,
-    cookie: { maxAge: oneDay },
-    resave: false
-    }));
 
 const loginRoute = require('./routes/login');
 const grabprodRoute = require('./routes/grabproduct');

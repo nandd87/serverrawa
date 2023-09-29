@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const session = require('express-session');
 
 router.get('/', (req, res) => {
-  if (req.session.idses) {
-    return res.json(req.session.idses)
+  const sessionId = req.cookies.session_id;
+  if (sessionId != null) {
+    return res.json({access:true, sessionId});
   } else {
-    return res.json(req.session.idses)
-  
+    return res.json({ access: false});
   }
 });
 
