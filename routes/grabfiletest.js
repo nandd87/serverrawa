@@ -43,24 +43,26 @@ const storage = multer.diskStorage({
         const nama = req.body.nama;
         const harga = req.body.harga;
         const deskripsi = req.body.deskripsi;
-        // const tipe = req.body.tipe;
+        const tipe = req.body.tipe;
+        const namatoko = req.body.namatoko;
         const harga2 = req.body.harga2;
         let finalImageURL = req.protocol + '://' + req.get('host')+ '/uploads/' + req.file.filename;
+        const img = "tes";
         // const query = "INSERT INTO `tbproduk`(`shopid`, `nama`, `harga`, `tipe`, `deskripsi`, `harga2`,`img`) VALUES ("+shopID+","+nama+",?,?,?,?,?)";
         // db.query(sql , (err, data)=>{
         //     res.json({status: "sukses",image: finalImageURL})
         // })
-        db.query(
-            "INSERT INTO `tbproduk`(`shopid`, `nama`, `harga`, `tipe`, `deskripsi`, `harga2`, `img`) VALUES ('"+shopID+"','"+nama+"','"+harga+"','"+tipe+"','"+deskripsi+"','"+harga2+"','"+finalImageURL+"')",
-            (err, result) => {
-              if (err) {
-                console.log(err);
-              } else {
-                res.send("Data berhasil ditambah");
-              }
-            }
-          );
-
+        const sql = "INSERT INTO tbproduk (shopid, namatoko, nama, harga, tipe, deskripsi, harga2, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        const values = [shopID, namatoko, nama, harga, tipe, deskripsi, harga2, img];
+      
+        db.query(sql, values, (err, result) => {
+          if (err) {
+            console.error(err);
+            res.status(500).json({ error: 'Internal server error' });
+          } else {
+            res.send("Data berhasil ditambah");
+          }
+        });
     })
 
 

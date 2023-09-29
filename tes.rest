@@ -11,3 +11,23 @@ POST http://localhost:8081/grab
     "img" : "asd",
     "deskripsi" : "asd",    
 }
+
+###
+GET http://localhost:8081/readtokobyid/3
+
+###
+GET http://localhost:8081/readprodukbyid/3
+
+###
+POST http://localhost:8081/update
+Content-Type: "enctype="multipart/form-data""
+
+{
+    "id" : "3",
+    "email" : "sdsadsa@gmail.com",
+    "name" : "ljkjlkjlk",
+    "username" : "sdsadsa@gmail.com",
+    "password" : "sdsadsa@gmail.com",
+    "rekening" : "sdsadsa@gmail.com",
+    
+}

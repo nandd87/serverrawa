@@ -1,37 +1,34 @@
 const express = require('express');
-const router = require('express').Router();
+const router = express.Router();
 const mysql = require('mysql');
-const cors = require('cors');
-const session = require('express-session');
-const cookieParser = require("cookie-parser");
-const multer = require("multer");
+const multer = require('multer');
+const path = require('path');
 
-const db= mysql.createConnection({
-    host : "localhost",
-    user : "root",
-    password : "",
-    database : "testserver",
-})
+const db = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: "dbrawabelong",
+});
 
 const storage = multer.diskStorage({
-    destination:function (req,file,cb){
+    destination: function (req, file, cb) {
         cb(null, "./public/upload");
-       },
-       filename: function(req,file,cb){
+    },
+    filename: function (req, file, cb) {
         cb(
             null,
-            path.parse(file.originalname).name + 
-            "-"+
-            Date.now() + 
+            path.parse(file.originalname).name +
+            "-" +
+            Date.now() +
             path.extname(file.originalname)
         );
-       }
-  })
+    },
+});
 
-  const upload = multer({ storage: storage })
+const upload = multer({ storage: storage });
 
-
-router.post("/", upload.single('gambar'),(req, res) => {
+router.post("/", upload.single('gambar'), (req, res) => {
     try {
         const id = req.body.id;
         const email = req.body.email;
@@ -39,13 +36,35 @@ router.post("/", upload.single('gambar'),(req, res) => {
         const username = req.body.username;
         const password = req.body.password;
         const rekening = req.body.rekening;
-        let finalImageURL = req.protocol + '://' + req.get('host')+ '/upload/' + req.file.filename;
+        const deskripsi = req.body.deskripsi;
+        const shopadd = req.body.shopadd;
+        const shopphone = req.body.shopphone;
+        const bankname = req.body.bankname;
+        const banknum = req.body.banknum;
         
-        const sql = "UPDATE `tbshop` SET `email`='"+email+"',`name`='"+name+"',`username`='"+username+"',`password`='"+password+"',`rekening`='"+rekening+"',`shopimg`='"+finalImageURL+"' WHERE `id` = '"+id+"' ";
-        return res.json({ sql });
-    } catch (error) {
-        console.log(error)
-    }
-});  
+        let img = '';
 
- module.exports = router;
+        if (req.file) {
+            img = req.protocol + '://' + req.get('host')+ '/upload/' + req.file.filename;
+        }
+
+        const sql = "UPDATE `tbshop` SET `email`=?, `name`=?, `username`=?, `password`=?, `rekening`=?, `shopimg`=?, `description`=?, `shopAddress`=?, `shopPhone`=?, `bankName`=?, `bankNum`=? WHERE `id` = ?";
+        const values = [email, name, username, password, rekening, img, deskripsi, shopadd, shopphone, bankname, banknum, id];
+        
+        db.query(sql, values, (err, result) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: 'Internal server error' });
+            } else {
+                console.log("berhasil");
+                return res.json({ result });
+            }
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+
+module.exports = router;

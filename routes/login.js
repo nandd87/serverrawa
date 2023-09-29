@@ -9,18 +9,18 @@ const db= mysql.createConnection({
     host : "localhost",
     user : "root",
     password : "",
-    database : "testserver",
+    database : "dbrawabelong",
 })
 
     router.post('/' , (req , res) =>{
-    const sql = "SELECT * FROM login WHERE email = ? AND password = ?";
+    const sql = "SELECT * FROM tbshop WHERE email = ? AND password = ?";
     db.query(sql,[req.body.email,req.body.password] , (err, data) =>{
         if(err) return res.json("error");
         if(data.length > 0){
             req.session.email = req.body.email;
-            req.session.idses = req.body.id;
+            req.session.idses = data[0].id;
             req.session.save();
-            return res.json("sukses");
+            return res.json({ success: true, idses: req.session.idses });
         }else{
             return res.json("gagal");
         }
